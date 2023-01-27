@@ -18,7 +18,7 @@ routerApod.get('/:id', async (req, res) => {
         const task = await getApodId(id)
         res.status(200).json(task)
     } catch (error) {
-        response.status(500)
+        response.status(500).json(error.message)
     }
 });
 
@@ -27,6 +27,7 @@ routerApod.post('/', async (req, res) => {
 
     try {
         const bodyData = req.body
+        console.log(bodyData)
         const apod = await createApod(bodyData)
         res.status(200).json(apod)
 

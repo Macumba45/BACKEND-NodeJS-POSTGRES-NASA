@@ -4,9 +4,9 @@ import User from "../models/user.js";
 
 
 export const getAll = async () => {
-    const apodList = await Apod.find();
-    const roverList = await Rover.find();
-    const userList = await User.find();
+    const apodList = await Apod.findAll();
+    const roverList = await Rover.findAll();
+    const userList = await User.findAll();
     return {
         apodList, roverList, userList
     }

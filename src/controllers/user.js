@@ -2,43 +2,18 @@ import User from "../models/user.js";
 import Rover from "../models/rover.js";
 // import Apod from "../models/apod.js";
 
-const getUserList = async () => {
-
-    const user = await User.find();
-    return user
-
-}
-
 const getUserId = async (id) => {
 
-    const user = await User.findById(id)
+    const user = await User.findByPk(id)
     return user
 }
 
 const getUserByEmail = async (email) => {
-    const user = await User.findOne({ email })
-    return user
-}
+    console.log(email)
 
-const createUser = async ({ name, email, password }) => {
-
-    const user = new User({ name, email, password });
-    return user.save();
+    return await User.findOne({ where: { email } });
 
 }
-
-const updateUser = async (id, data) => {
-
-    const user = await getUserId(id);
-    await user.updateOne(data)
-    return data
-}
-
-const deleteUser = async ({ id }) => {
-    await User.findOneAndRemove(id)
-    return true
-}
-
 const updateUserFavList = async ({ id, idNasa }) => {
 
     try {
@@ -74,4 +49,4 @@ const updateUserFavList = async ({ id, idNasa }) => {
 }
 
 
-export { getUserList, getUserId, getUserByEmail, createUser, updateUser, deleteUser, updateUserFavList }
+export { updateUserFavList, getUserByEmail, getUserId }

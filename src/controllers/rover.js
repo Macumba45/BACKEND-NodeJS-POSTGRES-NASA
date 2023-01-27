@@ -3,7 +3,7 @@ import Rover from "../models/rover.js";
 const getRoverList = async () => {
 
     try {
-        const roverList = await Rover.find();
+        const roverList = await Rover.findAll();
         return roverList
 
     } catch (error) {
@@ -14,43 +14,51 @@ const getRoverList = async () => {
 
 const getRoverId = async (id) => {
 
-    const roverId = await Rover.findById(id)
+    const roverId = await Rover.findByPk(id)
     return roverId
 }
 
 
-const createRover = async ({ idNasa, camera: name, full_name, img_src, earth_date }) => {
-    const exists = await Rover.find({ idNasa, camera: name, full_name, img_src, earth_date })
+const createRover = async ({ id, img_src, earth_date }) => {
+    const exists = await Rover.findAll({
+        where:
+        {
+            id,
+            img_src,
+            earth_date
+        }
+    })
     const arrRoverCreation = []
-    const roverFind = await Rover.find()
+    const roverFind = await Rover.findAll({ where: { id, img_src, earth_date } })
 
     try {
         for (const item of exists) {
-            const exists = roverFind.find({ idNasa, camera: name, full_name, img_src, earth_date })
+            const exists = roverFind.findAll({ where: { id, } })
             if (!exists) {
                 arrRoverCreation.push(item)
             }
         }
-        const createRover = new Rover({ idNasa, camera: name, full_name, img_src, earth_date });
+        const createRover = await Rover.create({ id, img_src, earth_date });
+        console.log(createRover)
         return createRover.save()
 
     } catch (error) {
         console.log("DOCUMENTO YA ESTA CREADO")
-
     }
-
 }
-
 
 const updateRover = async (id, data) => {
 
-    const roverUpdate = await getApodId(id);
-    await roverUpdate.updateOne(data)
-    return data
+    const roverUpdate = await Rover.update(data, {
+        where: { id }
+    });
+    return roverUpdate
 }
 
-const deleteRover = async ({ id }) => {
-    await Rover.findOneAndRemove({ id })
+const deleteRover = async (id) => {
+    console.log(id)
+
+    await Rover.destroy({ where: { id } });
     return true
 }
 

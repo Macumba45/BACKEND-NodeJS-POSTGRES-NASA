@@ -1,5 +1,5 @@
 import User from '../models/user.js';
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import jsonwebtoken from 'jsonwebtoken';
 const saltRounds = 10;
 import { getUserByEmail } from '../controllers/user.js';
@@ -15,8 +15,8 @@ const signup = async ({ email, password }) => {
 
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const user = new User({ email, password: hashedPassword, salt })
-    await user.save()
+    const user = await User.create({ email, password: hashedPassword, salt })
+    await user.save();
 
     return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET, {
         expiresIn: '24h'
@@ -34,15 +34,16 @@ const login = async ({ email, password }) => {
     }
 
     const match = await bcrypt.compare(password, user.password);
+    console.log(match)
 
     if (!match) {
         throw new Error('Invalid password');
     }
-    if (match) {
-        return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET, {
-            expiresIn: '24h'
-        })
-    }
+
+    return jsonwebtoken.sign({ email: user.email }, process.env.TOKEN_SECRET, {
+        expiresIn: '24h'
+    })
+
 
 }
 

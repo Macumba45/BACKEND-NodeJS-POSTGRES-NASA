@@ -1,30 +1,34 @@
-import mongoose from "mongoose";
+import { Sequelize } from "sequelize";
+import db from "../services/db.js"
 
-export const roverSchema = new mongoose.Schema({
+const Rover = db.define('rovers', {
 
-    idNasa: {
-        type: Number,
-        required: true
-
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false,
     },
 
     camera: {
-        name: {
-            type: String,
+        type: Sequelize.JSON,
+        allowNull: false,
+        defaultValue: {},
+        get() {
+            return JSON.parse(this.getDataValue('camera'));
         },
-        full_name: {
-            type: String,
+        set(value) {
+            this.setDataValue('camera', JSON.stringify(value));
         }
     },
     img_src: {
-        type: String,
+        type: Sequelize.STRING,
+        // allowNull: false,
     },
     earth_date: {
-        type: String,
+        type: Sequelize.STRING,
+        // allowNull: false,
 
     },
 });
 
-const Rover = mongoose.model('RoversApi', roverSchema);
-
-export default Rover 
+export default Rover;

@@ -1,5 +1,5 @@
 import express from 'express';
-import { connectToDb } from './src/services/db.js';
+import Sequelize from './src/services/db.js';
 import bodyParser from 'body-parser';
 import routerApod from './src/routes/apod.js';
 import routerRover from './src/routes/rover.js';
@@ -16,35 +16,6 @@ dotenv.config();
 
 const startApp = async () => {
 
-    // const deleteAllApod = function () {
-
-    //     Apod.deleteMany({}, function (err) {
-    //         if (err) console.log(err);
-    //         console.log("Successful deletion Apod");
-    //     });
-
-    // }
-    // deleteAllApod()
-
-    // const deleteAllRovers = function () {
-
-    //     Rover.deleteMany({}, function (err) {
-    //         if (err) console.log(err);
-    //         console.log("Successful deletion Rover");
-    //     });
-
-    // }
-    // deleteAllRovers()
-
-    // const deleteAllUsers = function () {
-
-    //     User.deleteMany({}, function (err) {
-    //         if (err) console.log(err);
-    //         console.log("Successful deletion Users");
-    //     });
-
-    // }
-    // deleteAllUsers()
 
     const app = express();
     const port = process.env.PORT;
@@ -66,7 +37,8 @@ const startApp = async () => {
     app.use('/sync-apiRovers', routerApiRovers);
 
     try {
-        await connectToDb()
+        await Sequelize.sync({ force: false });
+        console.log("All models were synchronized successfully.");
         app.listen(port, () => {
             console.log(`App listening on port ${port}`);
         })

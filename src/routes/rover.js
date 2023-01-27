@@ -27,6 +27,7 @@ routerRover.get('/:id', async (req, res) => {
 routerRover.post('/', async (req, res) => {
     try {
         const bodyData = req.body
+        console.log(req.body)
         const rover = await createRover(bodyData)
         res.status(200).json(rover)
 
@@ -51,11 +52,12 @@ routerRover.delete('/:id', async (req, res) => {
 
     try {
         const { id } = req.params
+        console.log(id)
         await deleteRover(id)
         res.status(200).json('Document deleted successfully')
 
     } catch (error) {
-        response.status(500)
+        res.status(500).json(error.message)
     }
 
 

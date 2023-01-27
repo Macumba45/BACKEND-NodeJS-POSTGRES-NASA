@@ -1,33 +1,30 @@
-import mongoose from "mongoose";
+import { Sequelize } from "sequelize";
+import db from "../services/db.js"
 
+const Apod = db.define('apods', {
 
-const apodSchema = new mongoose.Schema({
-
+    id: {
+        type: Sequelize.INTEGER, // debe ser tipo string uuid
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
     title: {
-        type: String,
-        required: true,
-    },
+        type: Sequelize.STRING(2048),
 
+    },
     explanation: {
-        type: String,
-        required: true,
-
+        type: Sequelize.STRING(2048),
     },
-
     url: {
-        type: String,
-        required: true,
-
+        type: Sequelize.STRING(2048),
     },
     date: {
-        type: String,
-        required: true,
+        type: Sequelize.STRING(2048),
+    }
 
-    },
 })
 
-const Apod = mongoose.model('ApodApi', apodSchema,);
-
-export default Apod
+export default Apod;
 
 

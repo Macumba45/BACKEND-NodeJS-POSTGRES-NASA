@@ -1,13 +1,18 @@
-import mongoose from 'mongoose';
-mongoose.set("strictQuery", false);
+import { Sequelize } from 'sequelize';
+
+const sequelize = new Sequelize(
+    "macumba",
+    "macumba",
+    "macumba",
+    {
+        host: 'localhost',
+        dialect: 'postgres',
+    }
+)
+
+export default sequelize;
 
 
-export const connectToDb = async () => {
 
-    // await mongoose.connect('mongodb://localhost:27017/nasa_dbd', {})
-    // console.log("Connected to MongoDB");
 
-    await mongoose.connect(`${process.env.MONGODB}://${process.env.HOST}:${process.env.PORTHOST}/${process.env.DBNAME}`, {})
-    console.log("Connected to MongoDB");
 
-}

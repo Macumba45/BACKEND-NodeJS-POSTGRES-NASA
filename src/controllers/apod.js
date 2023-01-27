@@ -2,38 +2,51 @@ import Apod from "../models/apod.js";
 
 const getApodList = async () => {
     try {
-        const apodList = await Apod.find();
+        const apodList = await Apod.findAll();
         return apodList
 
     } catch (error) {
-
         console.log(error);
-
     }
-
 }
 
 const getApodId = async (id) => {
 
-    const apodId = await Apod.findById(id)
+    const apodId = await Apod.findByPk(id)
     return apodId
 }
 
 
-const createApod = async ({ title, explanation, url, date }) => {
-    const exists = await Apod.find({ title, explanation, url, date })
+const createApod = async ({ id, title, explanation, url, date }) => {
+    const exists = await Apod.findAll({
+        where: {
+            id,
+            title,
+            explanation,
+            url,
+            date
+        }
+    })
 
     const arrApodCreation = []
-    const apodFind = await Apod.find()
+    const apodFind = await Apod.findAll()
 
     try {
         for (const item of exists) {
-            const exists = apodFind.find({ title, explanation, url, date })
+            const exists = apodFind.findAll({
+                where: {
+                    id,
+                    title,
+                    explanation,
+                    url,
+                    date
+                }
+            })
             if (!exists) {
                 arrApodCreation.push(item)
             }
         }
-        const apodPrueba = new Apod({ title, explanation, url, date });
+        const apodPrueba = await Apod.create({ id, title, explanation, url, date });
         return apodPrueba.save()
 
     } catch (error) {
@@ -43,17 +56,18 @@ const createApod = async ({ title, explanation, url, date }) => {
 
 }
 
-
-
 const updateApod = async (id, data) => {
 
-    const apodUpdate = await getApodId(id);
-    await apodUpdate.updateOne(data)
-    return data
+    const apodUpdate = await Apod.update(data, {
+        where: { id }
+    });
+    return apodUpdate
 }
 
-const deleteApod = async ({ id }) => {
-    await Apod.findOneAndRemove({ id })
+const deleteApod = async (id) => {
+    await Apod.destroy({
+        where: { id }
+    })
     return true
 }
 
