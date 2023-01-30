@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   rover.init({
     nasaId: DataTypes.STRING,
     img_src: DataTypes.STRING,
-    earth_date: DataTypes.STRING
+    earth_date: DataTypes.STRING,
+    camera: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'rover',

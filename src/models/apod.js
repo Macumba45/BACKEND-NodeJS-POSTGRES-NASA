@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     date: DataTypes.STRING,
     explanation: DataTypes.STRING,
-    url: DataTypes.STRING
+    url: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'apod',

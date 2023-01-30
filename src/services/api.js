@@ -46,8 +46,10 @@ async function apiCallRovers() {
         nasaId: item.id,
         img_src: item.img_src,
         earth_date: item.earth_date,
-        name: item.camera && item.camera.name || "",
-        full_name: item.camera && item.camera.full_name || "",
+        camera: {
+            name: item.camera.name,
+            full_name: item.camera.full_name
+        },
     }));
     const rovers = await Rover.findAll();
     const itemsToCreate = [];
