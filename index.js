@@ -9,7 +9,6 @@ const routerApiRovers = require('./src/routes/syncApiRovers.js');
 const routerAll = require('./src/routes/all.js');
 const dotenv = require('dotenv');
 const ensureAuthenticated = require('./src/middleware/auth.js');
-const db = require('./src/models/index.js');
 
 
 dotenv.config();
@@ -37,8 +36,6 @@ const startApp = async () => {
     app.use('/sync-apiRovers', routerApiRovers);
 
     try {
-        await db.sequelize.sync({ force: false });
-        console.log("All models were synchronized successfully.");
         app.listen(port, () => {
             console.log(`App listening on port ${port}`);
         })

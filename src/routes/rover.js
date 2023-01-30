@@ -29,9 +29,8 @@ routerRover.get('/:id', async (req, res) => {
 routerRover.post('/', async (req, res) => {
     try {
         const bodyData = req.body
-        const roverFind = await Rover.findAll()
-        await createRover(bodyData)
-        res.status(200).json("Document successfully added")
+        const rover = await createRover(bodyData)
+        res.status(200).json(rover)
 
 
     } catch (error) {
@@ -66,8 +65,6 @@ routerRover.delete('/:id', async (req, res) => {
 
 
 });
-
-
 
 module.exports = routerRover
 

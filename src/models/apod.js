@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   apod.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
     title: DataTypes.STRING,
     date: DataTypes.STRING,
     explanation: DataTypes.STRING,

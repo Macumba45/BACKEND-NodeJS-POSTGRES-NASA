@@ -8,7 +8,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        defaultValue: Sequelize.UUIDV4,
       },
       nasaId: {
         type: Sequelize.INTEGER

@@ -14,7 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   rover.init({
-    nasaId: DataTypes.STRING,
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
+    nasaId: DataTypes.INTEGER,
     img_src: DataTypes.STRING,
     earth_date: DataTypes.STRING,
     camera: DataTypes.JSON
