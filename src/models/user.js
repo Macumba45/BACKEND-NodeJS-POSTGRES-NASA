@@ -1,44 +1,26 @@
-import { DataTypes, Sequelize } from "sequelize";
-import db from "../services/db.js"
-
-
-const User = db.define("users", {
-
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-    },
-    name: {
-        type: Sequelize.STRING,
-    },
-    email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    salt: {
-        type: Sequelize.STRING,
-    },
-    favList: {
-        type: Sequelize.STRING
-    },
-    createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-    },
-    updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class user extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-}, { collection: "users" })
-
-
-
-
-export default User
+  }
+  user.init({
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    name: DataTypes.STRING,
+    salt: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'user',
+  });
+  return user;
+};

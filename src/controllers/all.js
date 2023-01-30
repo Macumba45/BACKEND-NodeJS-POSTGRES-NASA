@@ -1,6 +1,7 @@
-import Apod from "../models/apod.js";
-import Rover from "../models/rover.js";
-import User from "../models/user.js";
+const Apod = require("../models/apod.js");
+const Rover = require("../models/rover.js");
+const User = require("../models/user.js");
+
 
 
 export const getAll = async () => {

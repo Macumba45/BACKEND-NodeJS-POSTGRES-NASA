@@ -1,5 +1,6 @@
-import { Router } from 'express';
-import { getApodList, getApodId, createApod, updateApod, deleteApod } from '../controllers/apod.js';
+const Router = require('express').Router;
+
+const { getApodList, getApodId, createApod, updateApod, deleteApod } = require('../controllers/apod.js')
 const routerApod = Router()
 
 routerApod.get('/', async (req, res) => {
@@ -33,7 +34,7 @@ routerApod.post('/', async (req, res) => {
 
 
     } catch (error) {
-
+        console.log(error)
         res.status(500).json('Document creation failed')
     }
 })
@@ -64,6 +65,5 @@ routerApod.delete('/:id', async (req, res) => {
 });
 
 
-
-export default routerApod
+module.exports = routerApod
 

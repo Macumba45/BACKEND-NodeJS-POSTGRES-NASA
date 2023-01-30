@@ -1,4 +1,5 @@
-import Rover from "../models/rover.js";
+const db = require('../models');
+const Rover = db.rover
 
 const getRoverList = async () => {
 
@@ -7,7 +8,7 @@ const getRoverList = async () => {
         return roverList
 
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 
 }
@@ -18,31 +19,23 @@ const getRoverId = async (id) => {
     return roverId
 }
 
+const createRover = async ({ img_src, earth_date, nasaId }) => {
 
-const createRover = async ({ id, img_src, earth_date }) => {
-    const exists = await Rover.findAll({
-        where:
-        {
-            id,
-            img_src,
-            earth_date
-        }
-    })
     const arrRoverCreation = []
-    const roverFind = await Rover.findAll({ where: { id, img_src, earth_date } })
-
+    const roverFind = await Rover.findAll({ where: { nasaId: nasaId } })
+    const exists = await Rover.findAll({ where: { nasaId: nasaId } })
     try {
         for (const item of exists) {
-            const exists = roverFind.findAll({ where: { id, } })
+            const exists = roverFind.find()
             if (!exists) {
                 arrRoverCreation.push(item)
             }
         }
-        const createRover = await Rover.create({ id, img_src, earth_date });
-        console.log(createRover)
-        return createRover.save()
+        const createRover = await Rover.create({ img_src, earth_date, nasaId });
+        return createRover
 
     } catch (error) {
+        console.log(error)
         console.log("DOCUMENTO YA ESTA CREADO")
     }
 }
@@ -56,10 +49,9 @@ const updateRover = async (id, data) => {
 }
 
 const deleteRover = async (id) => {
-    console.log(id)
 
     await Rover.destroy({ where: { id } });
     return true
 }
 
-export { getRoverList, getRoverId, createRover, updateRover, deleteRover }
+module.exports = { getRoverList, getRoverId, createRover, updateRover, deleteRover }

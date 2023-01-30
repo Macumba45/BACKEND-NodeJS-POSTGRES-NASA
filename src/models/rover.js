@@ -1,34 +1,25 @@
-import { Sequelize } from "sequelize";
-import db from "../services/db.js"
-
-const Rover = db.define('rovers', {
-
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-    },
-
-    camera: {
-        type: Sequelize.JSON,
-        allowNull: false,
-        defaultValue: {},
-        get() {
-            return JSON.parse(this.getDataValue('camera'));
-        },
-        set(value) {
-            this.setDataValue('camera', JSON.stringify(value));
-        }
-    },
-    img_src: {
-        type: Sequelize.STRING,
-        // allowNull: false,
-    },
-    earth_date: {
-        type: Sequelize.STRING,
-        // allowNull: false,
-
-    },
-});
-
-export default Rover;
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class rover extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  rover.init({
+    nasaId: DataTypes.STRING,
+    img_src: DataTypes.STRING,
+    earth_date: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'rover',
+  });
+  return rover;
+};

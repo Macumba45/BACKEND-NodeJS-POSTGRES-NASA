@@ -1,4 +1,5 @@
-import Apod from "../models/apod.js";
+const db = require("../models/index.js");
+const Apod = db.apod
 
 const getApodList = async () => {
     try {
@@ -20,7 +21,6 @@ const getApodId = async (id) => {
 const createApod = async ({ id, title, explanation, url, date }) => {
     const exists = await Apod.findAll({
         where: {
-            id,
             title,
             explanation,
             url,
@@ -71,4 +71,4 @@ const deleteApod = async (id) => {
     return true
 }
 
-export { getApodList, getApodId, createApod, updateApod, deleteApod }
+module.exports = { getApodList, getApodId, createApod, updateApod, deleteApod }

@@ -1,12 +1,16 @@
-import { Router } from 'express';
-import { getUserId, updateUserFavList } from '../controllers/user.js';
+const Router = require('express').Router;
+const getUserId = require('../controllers/user.js').getUserId;
+const updateUserFavList = require('../controllers/user.js').updateUserFavList;
 const routerUser = Router()
 
-routerUser.post('/favBookList/:idNasa', async (req, res) => {
+routerUser.post('/favBookList/:id', async (req, res) => {
 
     try {
-        const { idNasa } = req.params
-        const user = await updateUserFavList({ id: req.user.id, idNasa })
+        const { id } = req.params
+        console.log(req.params)
+        const user = await updateUserFavList({ userID: req.user.id, id })
+        console.log(user)
+        // console.log(req.user.id, id)
         if (user === undefined) {
             return res.status(200).json("Data no exist in database")
         }
@@ -19,10 +23,10 @@ routerUser.post('/favBookList/:idNasa', async (req, res) => {
 });
 
 
-routerUser.get('/favBookList/:idNasa', async (req, res) => {
+routerUser.get('/favBookList/:id', async (req, res) => {
     try {
-        const { idNasa } = req.params
-        const user = await getUserId(idNasa)
+        const { id } = req.params
+        const user = await getUserId(id)
         const favorites = user.favList
         res.status(200).json(favorites)
 
@@ -31,5 +35,5 @@ routerUser.get('/favBookList/:idNasa', async (req, res) => {
     }
 })
 
-export default routerUser
+module.exports = routerUser
 

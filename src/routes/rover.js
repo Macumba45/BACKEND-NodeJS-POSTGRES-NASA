@@ -1,5 +1,7 @@
-import { Router } from 'express';
-import { getRoverList, getRoverId, createRover, updateRover, deleteRover } from '../controllers/rover.js';
+const db = require("../models/index.js");
+const Rover = db.rover
+const Router = require('express').Router;
+const { getRoverList, getRoverId, createRover, updateRover, deleteRover } = require('../controllers/rover.js');
 const routerRover = Router()
 
 
@@ -8,7 +10,7 @@ routerRover.get('/', async (req, res) => {
         const rovers = await getRoverList()
         res.status(200).json(rovers)
     } catch (error) {
-        response.status(500)
+        res.status(500).json(error.message)
     }
 })
 
@@ -19,7 +21,7 @@ routerRover.get('/:id', async (req, res) => {
         const task = await getRoverId(id)
         res.status(200).json(task)
     } catch (error) {
-        response.status(500)
+        res.status(500)
     }
 });
 
@@ -27,12 +29,14 @@ routerRover.get('/:id', async (req, res) => {
 routerRover.post('/', async (req, res) => {
     try {
         const bodyData = req.body
-        console.log(req.body)
-        const rover = await createRover(bodyData)
-        res.status(200).json(rover)
+        const roverFind = await Rover.findAll()
+        await createRover(bodyData)
+        res.status(200).json("Document successfully added")
+
 
     } catch (error) {
-        res.status(500).json('Document creation failed')
+        console.log(error)
+        res.status(500).json(error.message)
     }
 })
 
@@ -65,5 +69,5 @@ routerRover.delete('/:id', async (req, res) => {
 
 
 
-export default routerRover
+module.exports = routerRover
 

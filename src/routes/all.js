@@ -1,11 +1,10 @@
-import { Router } from 'express';
-import { getAll } from '../controllers/all.js';
+const Router = require('express').Router;
 
-const routerAll = Router()
+const routerAll = Router();
 
-routerAll.get('/', async (req, res) => {
-    const all = await getAll()
-    res.status(200).json(all)
+routerAll.get("/", async (req, res) => {
+  const all = await getAll();
+  res.status(200).json(all);
 });
 
-export default routerAll;
+module.exports = routerAll;

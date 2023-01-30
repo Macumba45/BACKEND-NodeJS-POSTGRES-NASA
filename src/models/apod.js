@@ -1,30 +1,26 @@
-import { Sequelize } from "sequelize";
-import db from "../services/db.js"
-
-const Apod = db.define('apods', {
-
-    id: {
-        type: Sequelize.INTEGER, // debe ser tipo string uuid
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
-    },
-    title: {
-        type: Sequelize.STRING(2048),
-
-    },
-    explanation: {
-        type: Sequelize.STRING(2048),
-    },
-    url: {
-        type: Sequelize.STRING(2048),
-    },
-    date: {
-        type: Sequelize.STRING(2048),
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class apod extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-
-})
-
-export default Apod;
-
-
+  }
+  apod.init({
+    title: DataTypes.STRING,
+    date: DataTypes.STRING,
+    explanation: DataTypes.STRING,
+    url: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'apod',
+  });
+  return apod;
+};

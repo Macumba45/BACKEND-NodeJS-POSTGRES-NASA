@@ -10,14 +10,19 @@
     "startdb": "docker compose up",
     "stopdb": "docker compose down"
   },
-  "type": "module",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "docker": "^1.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "node-fetch": "^3.3.0",
+    "node-fetch": "^2.6.8",
+    "node-sass": "^8.0.0",
+    "path": "^0.12.7",
     "pg": "^8.8.0",
-    "sequelize": "^6.28.0"
-  }
+    "sequelize": "^6.28.0",
+    "sequelize-cli": "^6.6.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {}
 }

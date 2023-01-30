@@ -1,6 +1,7 @@
-import User from "../models/user.js";
-import Rover from "../models/rover.js";
-// import Apod from "../models/apod.js";
+const db = require('../models');
+const User = db.user;
+const Rover = db.rover;
+
 
 const getUserId = async (id) => {
 
@@ -9,30 +10,39 @@ const getUserId = async (id) => {
 }
 
 const getUserByEmail = async (email) => {
-    console.log(email)
+    try {
+        const user = await User.findOne({
+            where:
+                { email: email }
+        })
+        return user
+    } catch (error) {
+        console.log("este es el error " + error.message);
 
-    return await User.findOne({ where: { email } });
+    }
 
 }
-const updateUserFavList = async ({ id, idNasa }) => {
+
+const updateUserFavList = async ({ userID, id }) => {
 
     try {
 
-        const user = await getUserId(id);
-        const currentFavList = user.favList
+        const user = await getUserId(userID);
+        const currentFavList = user.favList;
+        console.log(currentFavList)
         let newFavsList = currentFavList
-        const existed = currentFavList.includes(idNasa)
-        const roverDB = await Rover.findById(idNasa)
+        const existed = currentFavList.includes({ id })
+        const roverDB = await Rover.findOne(id)
 
         if (existed) {
-            newFavsList = currentFavList.filter(item => item !== idNasa)
+            newFavsList = currentFavList.filter(item => item !== id)
             console.log("Este documento ha sido eliminado")
         } else if (roverDB) {
-            newFavsList.push(idNasa)
+            newFavsList.push(id)
             console.log("Este documento ha sido insertado")
         }
 
-        await User.findByIdAndUpdate(id, { favList: newFavsList })
+        await User.update(userID, { favList: newFavsList })
 
         let userUpdate = await getUserId(id)
         userUpdate = JSON.parse(JSON.stringify(userUpdate))
@@ -43,10 +53,10 @@ const updateUserFavList = async ({ id, idNasa }) => {
         return userUpdate_
 
     } catch (error) {
-        // console.log(error.message)
+        console.log(error.message)
     }
 
 }
 
 
-export { updateUserFavList, getUserByEmail, getUserId }
+module.exports = { updateUserFavList, getUserByEmail, getUserId }

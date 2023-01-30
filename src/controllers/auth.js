@@ -1,8 +1,10 @@
-import User from '../models/user.js';
-import bcrypt from 'bcrypt';
-import jsonwebtoken from 'jsonwebtoken';
+const db = require("../models/index.js");
+const bcrypt = require('bcrypt');
+const jsonwebtoken = require('jsonwebtoken');
 const saltRounds = 10;
-import { getUserByEmail } from '../controllers/user.js';
+const getUserByEmail = require('./user.js').getUserByEmail;
+const User = db.user;
+
 
 
 const signup = async ({ email, password }) => {
@@ -28,13 +30,14 @@ const signup = async ({ email, password }) => {
 const login = async ({ email, password }) => {
 
     const user = await getUserByEmail(email);
+    console.log(user);
 
     if (!user) {
         throw new Error('User does not exist');
     }
 
     const match = await bcrypt.compare(password, user.password);
-    console.log(match)
+    // console.log(match)
 
     if (!match) {
         throw new Error('Invalid password');
@@ -47,4 +50,4 @@ const login = async ({ email, password }) => {
 
 }
 
-export { signup, login }
+module.exports = { signup, login }

@@ -1,12 +1,12 @@
-import { signup, login } from '../controllers/auth.js';
-import { Router } from 'express';
+const { signup, login } = require('../controllers/auth');
+const Router = require('express').Router;
 const routerAuth = Router();
 
 routerAuth.post('/signup', async (req, res) => {
 
     try {
         const { email, password } = req.body
-        console.log(req.body)
+
 
         if (!email || !password) {
             res.status(502).json("incorrect email or password");
@@ -35,4 +35,4 @@ routerAuth.post('/login', async (req, res) => {
     }
 })
 
-export default routerAuth;
+module.exports = routerAuth;
