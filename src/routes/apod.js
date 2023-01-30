@@ -8,7 +8,7 @@ routerApod.get('/', async (req, res) => {
         const apods = await getApodList()
         res.status(200).json(apods)
     } catch (error) {
-        response.status(500)
+        res.status(500)
     }
 })
 
@@ -19,7 +19,7 @@ routerApod.get('/:id', async (req, res) => {
         const task = await getApodId(id)
         res.status(200).json(task)
     } catch (error) {
-        response.status(500).json(error.message)
+        res.status(500).json(error.message)
     }
 });
 
@@ -58,7 +58,7 @@ routerApod.delete('/:id', async (req, res) => {
         res.status(200).json('Document deleted successfully')
 
     } catch (error) {
-        response.status(500)
+        res.status(500)
     }
 
 
