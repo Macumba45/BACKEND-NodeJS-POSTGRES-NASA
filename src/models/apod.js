@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.apod.belongsToMany(models.user, {
+        through: 'userApod',
+        as: 'apodFavorites',
+        foreignKey: 'apodId'
+      });
     }
   }
   apod.init({

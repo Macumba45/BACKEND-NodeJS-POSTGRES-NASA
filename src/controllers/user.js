@@ -1,6 +1,7 @@
 const db = require('../models');
 const User = db.user;
 const Rover = db.rover;
+const Apod = db.apod;
 
 
 const getUserId = async (id) => {
@@ -23,17 +24,17 @@ const getUserByEmail = async (email) => {
 
 }
 
-const updateUserFavList = async ({ userId, roverId }) => {
+const updateUserFavListRover = async ({ userId, roverId }) => {
 
     let user = await User.findByPk(userId, {
         attributes: { exclude: ['password', 'salt'] },
         include: {
             model: db.rover,
-            as: 'favorites'
+            as: 'roverFavorites'
         }
     });
     // console.log('PREV', user)
-    let currentFavList = user.favorites.map(item => item.id) || [];
+    let currentFavList = user.roverFavorites.map(item => item.id) || [];
 
     const existed = currentFavList.includes(roverId);
 
@@ -43,15 +44,45 @@ const updateUserFavList = async ({ userId, roverId }) => {
         if (!rover) {
             throw new Error('Rover not found');
         }
-        user.addFavorites(rover)
+        user.addRoverFavorites(rover)
         isAdded = true;
     } else {
         const newList = currentFavList.filter(item => item !== roverId)
-        user.setFavorites(newList)
+        user.setRoverFavorites(newList)
+    }
+
+    return { user, isAdded };
+}
+
+const updateUserFavListApod = async ({ userId, apodId }) => {
+
+    let user = await User.findByPk(userId, {
+        attributes: { exclude: ['password', 'salt'] },
+        include: {
+            model: db.apod,
+            as: 'apodFavorites'
+        }
+    });
+    let currentFavList = user.apodFavorites.map(item => item.id) || [];
+
+    const existed = currentFavList.includes(apodId);
+
+    let isAdded = false;
+    if (!existed) {
+        const apod = await Apod.findByPk(apodId);
+        // console.log(apod)
+        if (!apod) {
+            throw new Error('Apod not found');
+        }
+        user.addApodFavorites(apod)
+        isAdded = true;
+    } else {
+        const newList = currentFavList.filter(item => item !== apodId)
+        user.setApodFavorites(newList)
     }
 
     return { user, isAdded };
 }
 
 
-module.exports = { updateUserFavList, getUserByEmail, getUserId }
+module.exports = { updateUserFavListRover, getUserByEmail, getUserId, updateUserFavListApod }

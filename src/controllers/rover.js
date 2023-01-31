@@ -19,32 +19,6 @@ const getRoverId = async (id) => {
     return roverId
 }
 
-const getRoverNasaId = async () => {
-    const findNasaId = await Rover.findAll()
-    return findNasaId
-}
-
-// const createRover = async ({ img_src, earth_date, nasaId }) => {
-
-//     const arrRoverCreation = []
-//     const exists = await Rover.findAll({ where: { nasaId: nasaId } })
-//     console.log(exists)
-//     try {
-//         for (const item of exists) {
-//             const exists = roverFind.find()
-//             if (!exists) {
-//                 arrRoverCreation.push(item)
-//             }
-//         }
-//         const createRover = await Rover.create({ img_src, earth_date, nasaId });
-//         return createRover
-
-//     } catch (error) {
-//         console.log(error)
-//         console.log("DOCUMENTO YA ESTA CREADO")
-//     }
-// }
-
 const createRover = async ({ img_src, earth_date, camera, nasaId }) => {
     try {
         const exists = await Rover.findOne({ where: { nasaId: nasaId } });

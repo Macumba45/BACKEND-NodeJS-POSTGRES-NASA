@@ -13,9 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       user.belongsToMany(models.rover, {
         through: 'userRover',
-        as: 'favorites',
+        as: 'roverFavorites',
         foreignKey: 'userId'
       });
+
+      user.belongsToMany(models.apod, {
+        through: 'userApod',
+        as: 'apodFavorites',
+        foreignKey: 'userId'
+      });
+
     }
   }
   user.init({

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.rover.belongsToMany(models.user, {
         through: 'userRover',
-        as: 'favorites',
+        as: 'roverFavorites',
         foreignKey: 'roverId'
       });
     }
