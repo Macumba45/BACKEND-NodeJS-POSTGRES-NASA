@@ -1,7 +1,9 @@
+const { getApodList, getApodId, updateApod, deleteApod } = require('../controllers/apod.js')
 const Router = require('express').Router;
-
-const { getApodList, getApodId, createApod, updateApod, deleteApod } = require('../controllers/apod.js')
 const routerApod = Router()
+const db = require("../models/index.js");
+const Apod = db.apod
+
 
 routerApod.get('/', async (req, res) => {
     try {
@@ -27,11 +29,15 @@ routerApod.get('/:id', async (req, res) => {
 routerApod.post('/', async (req, res) => {
 
     try {
-        const bodyData = req.body
-        console.log(bodyData)
-        const apod = await createApod(bodyData)
-        res.status(200).json(apod)
-
+        const { title } = req.body
+        const exists = await Apod.findOne({ title })
+        if (!exists) {
+            const bodyData = req.body
+            await Apod.create(bodyData)
+            res.status(200).json(bodyData)
+        } else {
+            res.status(200).json("Apod already Exists")
+        }
 
     } catch (error) {
         console.log(error)

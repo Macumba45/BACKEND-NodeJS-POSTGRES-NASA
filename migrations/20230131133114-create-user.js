@@ -3,23 +3,26 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
-    await queryInterface.createTable('apods', {
+    await queryInterface.createTable('users', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      title: {
-        type: Sequelize.STRING(2000),
+      email: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
       },
-      date: {
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      name: {
         type: Sequelize.STRING
       },
-      explanation: {
-        type: Sequelize.TEXT('long')
-      },
-      url: {
+      salt: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -33,6 +36,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('apods');
+    await queryInterface.dropTable('users');
   }
 };

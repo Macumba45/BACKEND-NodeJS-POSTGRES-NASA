@@ -23,39 +23,34 @@ const getUserByEmail = async (email) => {
 
 }
 
-const updateUserFavList = async ({ userID, id }) => {
-
-    try {
-
-        const user = await getUserId(userID);
-        const currentFavList = user.favList;
-        console.log(currentFavList)
-        let newFavsList = currentFavList
-        const existed = currentFavList.includes({ id })
-        const roverDB = await Rover.findOne(id)
-
-        if (existed) {
-            newFavsList = currentFavList.filter(item => item !== id)
-            console.log("Este documento ha sido eliminado")
-        } else if (roverDB) {
-            newFavsList.push(id)
-            console.log("Este documento ha sido insertado")
+const updateUserFavList = async ({ userId, roverId }) => {
+    console.log({ userId, roverId })
+    let user = await User.findByPk(userId, {
+        attributes: { exclude: ['password', 'salt'] },
+        include: {
+            model: db.rover,
+            as: 'favorites'
         }
+    });
+    console.log('PREV', user)
+    let currentFavList = user.favorites.map(item => item.id) || [];
 
-        await User.update(userID, { favList: newFavsList })
+    const existed = currentFavList.includes(roverId);
 
-        let userUpdate = await getUserId(id)
-        userUpdate = JSON.parse(JSON.stringify(userUpdate))
-        // console.log(userUpdate)
-
-        const { password, salt, ...userUpdate_ } = userUpdate;
-
-        return userUpdate_
-
-    } catch (error) {
-        console.log(error.message)
+    let isAdded = false;
+    if (!existed) {
+        const rover = await Rover.findByPk(roverId);
+        if (!rover) {
+            throw new Error('Rover not found');
+        }
+        user.addFavorites(rover)
+        isAdded = true;
+    } else {
+        const newList = currentFavList.filter(item => item !== roverId)
+        user.setFavorites(newList)
     }
 
+    return { user, isAdded };
 }
 
 

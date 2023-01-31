@@ -3,23 +3,29 @@ const getUserId = require('../controllers/user.js').getUserId;
 const updateUserFavList = require('../controllers/user.js').updateUserFavList;
 const routerUser = Router()
 
-routerUser.post('/favBookList/:id', async (req, res) => {
+routerUser.post('/favBookList/:roverId', async (req, res) => {
 
     try {
-        const { id } = req.params
-        console.log(req.params)
-        const user = await updateUserFavList({ userID: req.user.id, id })
-        console.log(user)
-        // console.log(req.user.id, id)
-        if (user === undefined) {
-            return res.status(200).json("Data no exist in database")
+        const { roverId } = req.params
+        const { user, isAdded } = await updateUserFavList({
+            userId: req.user.id,
+            roverId
+        })
+
+        if (isAdded) {
+            res.status(200).json("Favorites successfully added")
+        } else {
+            res.status(200).json("Favorites successfully removed")
         }
-        res.status(200).json("Data updated successfully")
 
     } catch (error) {
-        console.log(error.message)
+        if (error.message === 'No exist this data in database') {
+            res.status(404).json(error.message)
+        } else {
+            console.error(error)
+            res.status(500).json(error.message)
+        }
     }
-
 });
 
 

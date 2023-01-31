@@ -24,13 +24,12 @@ routerAuth.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body
         if (!email || !password) {
-            res.status(502).json("ERROR DE LOGIN");
+            res.status(502).json("Login failed");
         }
         const token = await login({ email, password })
         res.status(200).json(token)
 
     } catch (error) {
-        console.log("ERES MUY MALO")
         res.status(500).json(error.message)
     }
 })

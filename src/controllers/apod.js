@@ -18,36 +18,15 @@ const getApodId = async (id) => {
 }
 
 
-const createApod = async ({ id, title, explanation, url, date }) => {
-    const exists = await Apod.findAll({
-        where: {
-            title,
-            explanation,
-            url,
-            date
-        }
-    })
-
-    const arrApodCreation = []
-    const apodFind = await Apod.findAll()
+const createApod = async ({ title, explanation, url, date }) => {
 
     try {
-        for (const item of exists) {
-            const exists = apodFind.findAll({
-                where: {
-                    id,
-                    title,
-                    explanation,
-                    url,
-                    date
-                }
-            })
-            if (!exists) {
-                arrApodCreation.push(item)
-            }
+
+        const exists = await Apod.findOne({ where: { title: title } })
+        if (!exists) {
+            const createApod = await Apod.create({ title, explanation, url, date })
+            return createApod
         }
-        const apodPrueba = await Apod.create({ id, title, explanation, url, date });
-        return apodPrueba.save()
 
     } catch (error) {
         console.log("DOCUMENTO YA ESTA CREADO")

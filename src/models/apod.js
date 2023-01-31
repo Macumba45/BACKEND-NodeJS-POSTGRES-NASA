@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: DataTypes.STRING,
     date: DataTypes.STRING,
-    explanation: DataTypes.STRING,
+    explanation: {
+      type: DataTypes.TEXT('long')
+    },
     url: DataTypes.STRING,
   }, {
     sequelize,

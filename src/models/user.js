@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      user.belongsToMany(models.rover, {
+        through: 'userRover',
+        as: 'favorites',
+        foreignKey: 'userId'
+      });
     }
   }
   user.init({

@@ -28,16 +28,19 @@ routerRover.get('/:id', async (req, res) => {
 
 routerRover.post('/', async (req, res) => {
     try {
-        const bodyData = req.body
-        const rover = await createRover(bodyData)
-        res.status(200).json(rover)
-
-
+        const { nasaId } = req.body;
+        const exists = await Rover.findOne({ where: { nasaId } });
+        if (!exists) {
+            const bodyData = req.body;
+            await Rover.create(bodyData);
+            res.status(200).json(bodyData);
+        } else {
+            res.status(200).json("Rover already exists");
+        }
     } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
+        console.error(error);
     }
-})
+});
 
 routerRover.put('/:id', async (req, res) => {
     try {
