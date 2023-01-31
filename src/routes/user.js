@@ -1,9 +1,11 @@
 const Router = require('express').Router;
-const getUserId = require('../controllers/user.js').getUserId;
 const updateUserFavList = require('../controllers/user.js').updateUserFavList;
 const routerUser = Router()
+const db = require('../models');
+const User = db.user;
 
-routerUser.post('/favBookList/:roverId', async (req, res) => {
+
+routerUser.post('/addFavorites/:roverId', async (req, res) => {
 
     try {
         const { roverId } = req.params
@@ -11,7 +13,7 @@ routerUser.post('/favBookList/:roverId', async (req, res) => {
             userId: req.user.id,
             roverId
         })
-
+        console.log(isAdded)
         if (isAdded) {
             res.status(200).json("Favorites successfully added")
         } else {
@@ -29,12 +31,24 @@ routerUser.post('/favBookList/:roverId', async (req, res) => {
 });
 
 
-routerUser.get('/favBookList/:id', async (req, res) => {
+routerUser.get('/favList/:userId', async (req, res) => {
+
     try {
-        const { id } = req.params
-        const user = await getUserId(id)
-        const favorites = user.favList
-        res.status(200).json(favorites)
+
+        const { userId } = req.params
+        const user = await User.findOne({
+            where: { id: userId },
+            attributes: {
+                exclude: ['password', 'salt', 'createdAt', 'updatedAt']
+            },
+            include: [{
+                model: db.rover,
+                through: 'userRover',
+                as: 'favorites',
+            }]
+        })
+
+        res.status(200).json(user)
 
     } catch (error) {
         res.status(500).json(error.message)

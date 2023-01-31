@@ -1,7 +1,7 @@
 const db = require("../models/index.js");
 const Rover = db.rover
 const Router = require('express').Router;
-const { getRoverList, getRoverId, createRover, updateRover, deleteRover } = require('../controllers/rover.js');
+const { getRoverList, getRoverId, updateRover, deleteRover } = require('../controllers/rover.js');
 const routerRover = Router()
 
 

@@ -24,7 +24,7 @@ const getUserByEmail = async (email) => {
 }
 
 const updateUserFavList = async ({ userId, roverId }) => {
-    console.log({ userId, roverId })
+
     let user = await User.findByPk(userId, {
         attributes: { exclude: ['password', 'salt'] },
         include: {
@@ -32,7 +32,7 @@ const updateUserFavList = async ({ userId, roverId }) => {
             as: 'favorites'
         }
     });
-    console.log('PREV', user)
+    // console.log('PREV', user)
     let currentFavList = user.favorites.map(item => item.id) || [];
 
     const existed = currentFavList.includes(roverId);
