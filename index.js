@@ -9,6 +9,7 @@ const routerApiRovers = require('./src/routes/syncApiRovers.js');
 const routerAll = require('./src/routes/all.js');
 const dotenv = require('dotenv');
 const ensureAuthenticated = require('./src/middleware/auth.js');
+const cors = require('cors');
 
 
 dotenv.config();
@@ -17,6 +18,9 @@ const startApp = async () => {
 
 
     const app = express();
+
+    app.use(cors())
+
     const port = process.env.PORT;
 
     app.use(bodyParser.json());
