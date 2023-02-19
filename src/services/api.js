@@ -15,7 +15,7 @@ async function apiCallApod() {
         url: apod.url,
     }));
     // Ordenar el array por fecha en orden ascendente
-    newList.sort((a, b) => new Date(a.date) - new Date(b.date));
+    newList.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     for (let i = 0; i < newList.length; i++) {
         let element = newList[i];
