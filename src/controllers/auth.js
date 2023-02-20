@@ -30,6 +30,7 @@ const signup = async ({ email, password }) => {
 const login = async ({ email, password }) => {
 
     const user = await getUserByEmail(email);
+    console.log(user);
 
     if (!user) {
         throw new Error('User does not exist');

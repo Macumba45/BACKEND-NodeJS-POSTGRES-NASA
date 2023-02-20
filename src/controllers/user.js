@@ -12,16 +12,11 @@ const getUserId = async (id) => {
 
 const getUserByEmail = async (email) => {
     try {
-        const user = await User.findOne({
-            where:
-                { email: email }
-        })
+        const user = await User.findOne({ where: { email: email } })
         return user
     } catch (error) {
         console.log("este es el error " + error.message);
-
     }
-
 }
 
 const updateUserFavListRover = async ({ userId, roverId }) => {

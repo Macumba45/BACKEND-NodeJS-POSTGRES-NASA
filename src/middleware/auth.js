@@ -30,7 +30,7 @@ const ensureAuthenticated = async (req, res, next) => {
         return res.status(403).json({ message: 'Invalid token' });
     }
 
-    const user = await User.findOne({ email: payload.email })
+    const user = await User.findOne({ where: { email: payload.email } });
 
     if (!user) {
 

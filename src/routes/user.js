@@ -90,6 +90,7 @@ routerUser.get('/profile', async (req, res) => {
     try {
 
         const data = await getUserByEmail(req.user.email)
+        await data.reload();
         const user = {
             id: data.id,
             email: data.email,

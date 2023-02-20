@@ -6,6 +6,8 @@ routerAuth.post('/signup', async (req, res) => {
 
     try {
         const { email, password } = req.body
+        console.log(email)
+
 
 
         if (!email || !password) {
