@@ -30,7 +30,7 @@ routerApod.post('/', async (req, res) => {
 
     try {
         const { title } = req.body
-        const exists = await Apod.findOne({ title })
+        const exists = await Apod.findOne({ where: { title } })
         if (!exists) {
             const bodyData = req.body
             await Apod.create(bodyData)
